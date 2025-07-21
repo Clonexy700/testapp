@@ -1,47 +1,58 @@
 import sqlite3
 from typing import Optional, List
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 from app.models import ReviewOut
+from app.interfaces import IReviewRepository
 from app.config import get_settings
 
 
-class ReviewRepository:
+class ReviewRepository(IReviewRepository):
     def __init__(self):
-        self.db_url = get_settings().DATABASE_URL.replace("sqlite:///", "")
+        self.db_file = get_settings().DATABASE_URL.replace("sqlite://", "")
         self._init_db()
 
     def _get_conn(self):
-        conn = sqlite3.connect(self.db_url, check_same_thread=False)
+        conn = sqlite3.connect(self.db_file, check_same_thread=False)
         conn.row_factory = sqlite3.Row
         return conn
 
     def _init_db(self):
-        ddl = """
+        ddl = '''
         CREATE TABLE IF NOT EXISTS reviews (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           text TEXT NOT NULL,
           sentiment TEXT NOT NULL,
           created_at TEXT NOT NULL
         );
-        """
-        conn = self._get_conn(); cur = conn.cursor()
-        cur.execute(ddl); conn.commit(); conn.close()
+        '''
+        conn = self._get_conn()
+        conn.execute(ddl)
+        conn.commit()
+        conn.close()
 
     def add(self, text: str, sentiment: str) -> ReviewOut:
-        now = datetime.now(UTC)
-        conn = self._get_conn(); cur = conn.cursor()
-        cur.execute("INSERT INTO reviews (text, sentiment, created_at) VALUES (?, ?, ?)", (text, sentiment, now))
+        created_at = datetime.now(timezone.utc).isoformat()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO reviews (text, sentiment, created_at) VALUES (?, ?, ?)",
+            (text, sentiment, created_at)
+        )
         conn.commit()
-        review_id = cur.lastrowid
+        row_id = cur.lastrowid
         conn.close()
-        return ReviewOut(id=review_id, text=text, sentiment=sentiment, created_at=now)
+        return ReviewOut(id=row_id, text=text, sentiment=sentiment, created_at=created_at)
 
     def list(self, sentiment: Optional[str] = None) -> List[ReviewOut]:
-        conn = self._get_conn(); cur = conn.cursor()
+        conn = self._get_conn()
+        cur = conn.cursor()
         if sentiment:
-            cur.execute("SELECT * FROM reviews WHERE sentiment = ? ORDER BY id", (sentiment,))
+            cur.execute(
+                "SELECT * FROM reviews WHERE sentiment = ? ORDER BY id", (sentiment,)
+            )
         else:
             cur.execute("SELECT * FROM reviews ORDER BY id")
-        rows = cur.fetchall(); conn.close()
+        rows = cur.fetchall()
+        conn.close()
         return [ReviewOut(**dict(row)) for row in rows]

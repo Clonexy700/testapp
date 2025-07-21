@@ -1,9 +1,11 @@
 import torch
 from transformers import pipeline
+
+from app.interfaces import ISentimentService
 from app.config import get_settings
 
 
-class SentimentService:
+class SentimentService(ISentimentService):
     """
     Используем ru bert для распознования.
     """

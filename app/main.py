@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.reviews import router as reviews_router
+from app.routers.reviews import router as reviews_router
 
 
 app = FastAPI(title="Review Sentiment Service")

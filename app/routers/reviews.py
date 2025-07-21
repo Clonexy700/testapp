@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List, Optional
 
 from app.models import ReviewIn, ReviewOut
+from app.interfaces import IReviewRepository, ISentimentService
 from app.repository import ReviewRepository
-from app.sentiment_service import SentimentService
+from app.services.sentiment_service import SentimentService
 
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
@@ -12,7 +13,11 @@ service = SentimentService()
 
 
 @router.post("/", response_model=ReviewOut)
-def create_review(payload: ReviewIn):
+def create_review(
+        payload: ReviewIn,
+        repo: IReviewRepository = Depends(get_repository),
+        service: ISentimentService = Depends(get_sentiment_service)
+):
     text = payload.text.strip()
     if not text:
         raise HTTPException(400, "Review text cannot be empty")
@@ -21,5 +26,8 @@ def create_review(payload: ReviewIn):
 
 
 @router.get("/", response_model=List[ReviewOut])
-def list_reviews(sentiment: Optional[str] = Query(None, enum=["positive", "negative", "neutral"])):
+def list_reviews(
+        sentiment: Optional[str] = Query(None, enum=["positive", "negative", "neutral"]),
+        repo: IReviewRepository = Depends(get_repository)
+):
     return repo.list(sentiment)
