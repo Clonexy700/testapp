@@ -5,6 +5,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     DATABASE_URL: str = 'sqlite:///reviews.db'
     HF_MODEL: str = "blanchefort/rubert-base-cased-sentiment"
+
     class Config:
         env_file = '.env'
 
@@ -12,5 +13,3 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings() -> Settings:
     return Settings()
-
-
