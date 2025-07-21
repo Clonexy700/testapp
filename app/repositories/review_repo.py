@@ -9,7 +9,7 @@ from app.config import get_settings
 
 class ReviewRepository(IReviewRepository):
     def __init__(self):
-        self.db_file = get_settings().DATABASE_URL.replace("sqlite://", "")
+        self.db_file = get_settings().DATABASE_URL.replace("sqlite:///", "")
         self._init_db()
 
     def _get_conn(self):

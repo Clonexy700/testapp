@@ -5,6 +5,7 @@ from app.models.review import ReviewIn, ReviewOut
 from app.interfaces.review_abc import IReviewRepository, ISentimentService
 from app.repositories.review_repo import ReviewRepository
 from app.services.sentiment_service import SentimentService
+from app.dependencies import get_repository, get_sentiment_service
 
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
