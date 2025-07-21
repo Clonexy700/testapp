@@ -2,14 +2,16 @@ import sqlite3
 from typing import Optional, List
 from datetime import datetime, timezone
 
-from app.models.review import ReviewOut
+from app.schemas.review import ReviewOut
 from app.interfaces.review_abc import IReviewRepository
 from app.config import get_settings
 
 
 class ReviewRepository(IReviewRepository):
     def __init__(self):
-        self.db_file = get_settings().DATABASE_URL.replace("sqlite:///", "")
+        cfg = get_settings()
+        relative = cfg.DATABASE_URL.replace("sqlite:///", "")
+        self.db_file = str(relative)
         self._init_db()
 
     def _get_conn(self):
@@ -26,33 +28,23 @@ class ReviewRepository(IReviewRepository):
           created_at TEXT NOT NULL
         );
         '''
-        conn = self._get_conn()
-        conn.execute(ddl)
-        conn.commit()
-        conn.close()
+        conn = self._get_conn(); conn.execute(ddl); conn.commit(); conn.close()
 
     def add(self, text: str, sentiment: str) -> ReviewOut:
         created_at = datetime.now(timezone.utc).isoformat()
-        conn = self._get_conn()
-        cur = conn.cursor()
+        conn = self._get_conn(); cur = conn.cursor()
         cur.execute(
             "INSERT INTO reviews (text, sentiment, created_at) VALUES (?, ?, ?)",
             (text, sentiment, created_at)
         )
-        conn.commit()
-        row_id = cur.lastrowid
-        conn.close()
-        return ReviewOut(id=row_id, text=text, sentiment=sentiment, created_at=created_at)
+        conn.commit(); rid = cur.lastrowid; conn.close()
+        return ReviewOut(id=rid, text=text, sentiment=sentiment, created_at=created_at)
 
     def list(self, sentiment: Optional[str] = None) -> List[ReviewOut]:
-        conn = self._get_conn()
-        cur = conn.cursor()
+        conn = self._get_conn(); cur = conn.cursor()
         if sentiment:
-            cur.execute(
-                "SELECT * FROM reviews WHERE sentiment = ? ORDER BY id", (sentiment,)
-            )
+            cur.execute("SELECT * FROM reviews WHERE sentiment = ? ORDER BY id", (sentiment,))
         else:
             cur.execute("SELECT * FROM reviews ORDER BY id")
-        rows = cur.fetchall()
-        conn.close()
+        rows = cur.fetchall(); conn.close()
         return [ReviewOut(**dict(row)) for row in rows]

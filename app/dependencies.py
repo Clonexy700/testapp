@@ -1,13 +1,8 @@
 from fastapi import Depends
 
-from app.interfaces.review_abc import IReviewRepository, ISentimentService
-from app.repositories.review_repo import ReviewRepository
-from app.services.sentiment_service import SentimentService
+from app.interfaces.review_abc import IReviewService
+from app.services.review_service import ReviewService
 
 
-def get_repository() -> IReviewRepository:
-    return ReviewRepository()
-
-
-def get_sentiment_service() -> ISentimentService:
-    return SentimentService()
+def get_review_service() -> IReviewService:
+    return ReviewService()

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from app.models.review import ReviewOut
+from app.schemas.review import ReviewOut
 
 
 class IReviewRepository(ABC):
@@ -14,7 +14,15 @@ class IReviewRepository(ABC):
         pass
 
 
-class ISentimentService(ABC):
+class IReviewService(ABC):
     @abstractmethod
-    def analyze(self, text: str) -> str:
+    def create_review(self, text: str) -> ReviewOut:
+        pass
+
+    @abstractmethod
+    def list_reviews(self, sentiment: Optional[str] = None) -> List[ReviewOut]:
+        pass
+
+    @abstractmethod
+    def _analyze(self, text: str) -> str:
         pass

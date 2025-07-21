@@ -1,93 +1,142 @@
-.idea
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
 
-# C extensions
-*.so
+# python cashe
+**/__pycache__
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
+# virtual enviroments
+**/.venv
+**/venv
 
-# Virtual environments
-.venv/
+# env files
+.env
+
+# docker
+**/.devcontainer
+
+# editors settings
+**/.pycharm
+**/.idea
+
+# log files
+**.log
+**.log.**
+
+# pickles
+**.pckl
+
+# test files
+**.test.**
+
+# data files
+**.csv
+**.xls
+**.xlsx
+# **.json
+# **.html
+
+# sql files
+
+# jupyter
+**/.ipynb_checkpoints
+**/.ipynb
+**.ipynb
+
+# configs
+**.cfg
+
+# pictures
+**.png
+**.jpg
+
+!frontend/**
+
+# binaries
+**.bin
+**.npy
+**.state
+**.bin.state
+**.id2word
+**.bin.id2word
+**.pkl
+
+# temporary files
+/temp
+
+
+# Environments
+.env.local
+.env.prod
+.env
+.venv
+env/
 venv/
 ENV/
-env/
 env.bak/
 venv.bak/
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+#Docker data
+.docker_data
+# python cashe
+**/__pycache__
+*.pyc
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+# virtual enviroments
+**/.venv
+**/venv
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# FastAPI / Uvicorn logs
-*.log
-
-# VS Code
-.vscode/
-
-# PyCharm
-.idea/
-*.iml
-
-# Environment variables
+# env files
 .env
 
-# Database
-reviews.db
+# configs files
+configs/*
+!configs/config-example.toml
 
-# MacOS
-.DS_Store
+# docker
+**/.devcontainer
 
-# Windows
-Thumbs.db
+# editors settings
+**/.pycharm
+**/.idea
 
-__pycache__
+# log files
+**.log
+**.log.**
+
+# pickles
+**.pckl
+
+# test files
+**.test.**
+*1.*
+
+# data files
+**.csv
+**.xls
+**.xlsx
+**.json
+
+
+# sql files
+
+# jupyter
+**/.ipynb_checkpoints
+**/.ipynb
+**.ipynb
+
+# configs
+**.cfg
+
+# pictures
+**.png
+**.jpg
+
+#Docker data
+.docker_data
+*Dockerfile_example
+*Dockerfile.dev
+*compose.dev*
+
+#ruff
+.ruff_cache/
+
+#logs
+loki-data/
