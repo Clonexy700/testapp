@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from app.models import ReviewOut
+from app.models.review import ReviewOut
 
 
 class IReviewRepository(ABC):

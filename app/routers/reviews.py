@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List, Optional
 
-from app.models import ReviewIn, ReviewOut
-from app.interfaces import IReviewRepository, ISentimentService
-from app.repository import ReviewRepository
+from app.models.review import ReviewIn, ReviewOut
+from app.interfaces.review_abc import IReviewRepository, ISentimentService
+from app.repositories.review_repo import ReviewRepository
 from app.services.sentiment_service import SentimentService
 
 

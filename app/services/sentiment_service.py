@@ -1,7 +1,7 @@
 import torch
 from transformers import pipeline
 
-from app.interfaces import ISentimentService
+from app.interfaces.review_abc import ISentimentService
 from app.config import get_settings
 
 

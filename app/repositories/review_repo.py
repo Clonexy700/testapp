@@ -2,8 +2,8 @@ import sqlite3
 from typing import Optional, List
 from datetime import datetime, timezone
 
-from app.models import ReviewOut
-from app.interfaces import IReviewRepository
+from app.models.review import ReviewOut
+from app.interfaces.review_abc import IReviewRepository
 from app.config import get_settings
 
 
